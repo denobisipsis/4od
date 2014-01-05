@@ -13,7 +13,7 @@ function rtpa($url,$window)
 	
 	$json	    =json_decode(curl_proxy("http://www.rtpa.es/api/muestra_json_vod.php?id_programa=$idbase"));
 	
-	$mp4base="http://rtpa.ondemand.flumotion.com/rtpa/ondemand/vod/$link";
+	$mp4base="http://rtpa.ondemand.flumotion.com/rtpa/ondemand/vod/";
 	if (strpos($idactual,"id_generado"))
 		{
 		$idvod=_explode("data[",_explode("]",$idactual,0),1);
@@ -21,9 +21,9 @@ function rtpa($url,$window)
 		}
 	else	foreach ($json->VOD as $item) {if ($idactual==$item->id_generado) break;}
 						
-	if ($item->url=='') 			              $link=$mp4base.$item->id_programacion.'_1.mp4';	
+	if ($item->url=='') 			$link=$mp4base.$item->id_programacion.'_1.mp4';	
 	else if (!strpos($item->url,"ttp://")) 	$link=$mp4base.$item->url.'_1.mp4';		
-	else 					                          $link=$item->url;
+	else 				        $link=$item->url;
 								
 	$img	    =$item->url_imagen;	
 	epiinfo($window,$item->titulo);
