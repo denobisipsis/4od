@@ -16,35 +16,37 @@
                       $cod1=$cod[0];
                       $cod =array_slice($cod,1);
                      
-                      $funcs=$datas=$nfuncs=array();                 
-                                     
-                      foreach ($cod as $co)
-                            {
-                            if (substr($co,2,2)=="28")
-                                    {
-                                    $call=substr($co,0,2);
-                                   
-                                    $funcs[]=$call;
-                                   
-                                    $data=substr($cod1,-4);
-                                     
-                                    // control que los data no sean también 46
-                                   
-                                    if ($data=="") $data="2446";
-                                   
-                                    $push=$datas[]=hexdec(substr($data,2,2));
-     
-                                    if (substr($data,0,2)!="24")
-                                            $nfuncs2[$call]="reverse";
-                                    else
-                                            {
-                                            if ($push>5) // swap always > 5?
-                                                    $nfuncs2[$g]="swap";
-                                            else    $nfuncs2[$g]="slice";
-                                            }                              
-                                    }
-                            $cod1=$co;
-                            }
+		  $ncall=array_slice(explode("d65d",$fdecipher),1);
+		  			  
+		  $ncall=substr($ncall[0],2,2);
+					    
+		  $funcs=$datas=$nfuncs=$nfuncs2=array();		  
+		  		  
+		  foreach ($cod as $co)
+		  	{
+		  	if (substr($co,2,2)==$ncall) 
+		  		{
+				$call=substr($co,0,2);
+				
+				$funcs[]=$call;
+				
+		  		$data=substr($cod1,-4);
+		  				  		
+				if ($data=="") $data="2446";
+				
+				if (substr($data,0,2)!="24") 
+					$nfuncs2[$call]="reverse"; 
+				else    
+					{
+					if (($push=hexdec(substr($data,2,2)))>5) 
+					       $nfuncs2[$call]="swap"; 
+					else   $nfuncs2[$call]="slice";
+					}
+			
+				$datas[]=$push;
+				}
+			$cod1=$co;
+			}
                    
                     // ejecuta las acciones
                                                    
