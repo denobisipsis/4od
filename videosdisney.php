@@ -4,11 +4,11 @@ extrae & curl_proxy are macros
 
 // $contenth is the html from original url
 
-  $downurl=extrae($contenth,'"downloadUrl":','"','"');
+  	$downurl	=extrae($contenth,'"downloadUrl":','"','"');
 	
-	$wid	    =extrae($downurl,'/p','/','/');
-	$uiconf_id="11673211";
-	$entry_id =extrae($downurl,'/entry_id','/','/');
+	$wid	    	=extrae($downurl,'/p','/','/');
+	$uiconf_id	="11673211";
+	$entry_id 	=extrae($downurl,'/entry_id','/','/');
 
 // build the swf url
 
@@ -16,19 +16,19 @@ extrae & curl_proxy are macros
 
 // get the swf and extract relevant info
 
-	$swf	  =gzuncompress(substr(file_get_contents($swf),8));
+	$swf	  	=gzuncompress(substr(file_get_contents($swf),8));
 	
-	$info   =urldecode("widgetId=".extrae($swf,'widgetId','=','?'));
+	$info   	=urldecode("widgetId=".extrae($swf,'widgetId','=','?'));
 	
 	$partnerId	=extrae($info,'partnerId','=','&');
-	$subpId		  =extrae($info,'subpId','=','&');
-	$ts		      =extrae($info,'ts','=','&');
-	$ks		      =extrae($info,'ks','=','&');
-	$uid		    =extrae($info,'uid','=','&');
-	$cdnHost	  =extrae($info,'cdnHost','=','&');
-	$referrer   =base64_encode($urlorig);
+	$subpId	  	=extrae($info,'subpId','=','&');
+	$ts	      	=extrae($info,'ts','=','&');
+	$ks		=extrae($info,'ks','=','&');
+	$uid		=extrae($info,'uid','=','&');
+	$cdnHost	=extrae($info,'cdnHost','=','&');
+	$referrer   	=base64_encode($urlorig);
 
-	$kalsig		  =explode("|",base64_decode($ks))[0];
+	$kalsig		=explode("|",base64_decode($ks))[0];
 
 // with this info we make the post
 
@@ -65,7 +65,7 @@ extrae & curl_proxy are macros
 
 //  $mp4 is the final link
 
-		$mp4 		  =$result->media->attributes()->url;
+		$mp4 	  	=$result->media->attributes()->url;
 		$bitrate 	=$result->media->attributes()->bitrate;
 		$width 		=$result->media->attributes()->width;
 		$height 	=$result->media->attributes()->height;
