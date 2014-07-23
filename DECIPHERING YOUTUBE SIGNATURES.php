@@ -1,7 +1,11 @@
 	
 
     <?
-    /* DECIPHERING YOUTUBE SIGNATURES
+    /* 
+    
+    OBSOLETO
+    
+    DECIPHERING YOUTUBE SIGNATURES
        $_loc2-> deciphered signature */
      
     $swf =str_replace("\\","",extrae(file_get_contents($youtubeurl),"ytplayer.config =",'"url": "','"'));
