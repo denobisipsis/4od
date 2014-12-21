@@ -10,7 +10,7 @@
 	
 	$title		=infobase($contenth);
 	
-	$iframe		=file_get_contents(extrae($contenth,"<iframe data-location",'src="','"'));
+	$iframe		=file_get_contents(explode('"',explode("src=\"",explode("<iframe data-location",$contenth)[1])[1])[0]);
 	
 	$streamid	  =extrae($iframe,"flashvars.streamid =",'"','"');
 	$partnerid	=extrae($iframe,"flashvars.partnerid =",'"','"');
