@@ -8,7 +8,7 @@
 	          "Accept-Encoding:	gzip,deflate"
 	          );
 	
-	$title		=infobase($contenth);
+	// $title		=infobase($contenth);
 	
 	$iframe		=file_get_contents(explode('"',explode("src=\"",explode("<iframe data-location",$contenth)[1])[1])[0]);
 	
@@ -39,8 +39,10 @@
 	$link	=$link->token->attributes();
 	
 	$f4m	=$link->url."?hdnea=".$link->auth."&g=MXKNXXYEYNEB&hdcore=3.2.0";
+
+	echo $m3u8 =str_replace(array("/z/","manifest.f4m"),array("/i/","master.m3u8"),$f4m);
 	
-	$m3u8 =str_replace(array("/z/","manifest.f4m"),array("/i/","master.m3u8"),$f4m);
-	
-	mpeg3u($m3u8,"http");
+	// ffmpeg -i $m3u8
+		
+	//mpeg3u($m3u8,"http");
 ?>
