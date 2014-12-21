@@ -10,15 +10,20 @@
 	
 	// $title		=infobase($contenth);
 	
-	$iframe		=file_get_contents(explode('"',explode("src=\"",explode("<iframe data-location",$contenth)[1])[1])[0]);
+	function extr($str,$pattern)
+		{
+		preg_match($pattern,$str,$matches);
+		return $matches[1];
+		}
+		
+	$iframe		=file_get_contents(extr($contenth,'/<iframe data-location[^>]+src=[\'"]([^"]+)[\'"]/'));
 	
-	$streamid	  =extrae($iframe,"flashvars.streamid =",'"','"');
-	$partnerid	=extrae($iframe,"flashvars.partnerid =",'"','"');
-	$portalid	  =extrae($iframe,"flashvars.portalid =",'"','"');
-	$sprache	  =extrae($iframe,"flashvars.sprache =",'"','"');
-	$auth		    =extrae($iframe,"flashvars.auth =",'"','"');
-	$timestamp	=extrae($iframe,"flashvars.timestamp =",'"','"');
-	$v5ident	  =extrae($iframe,"flashvars.v5ident =",'"','"');
+	$opts		=array("streamid","partnerid","portalid","sprache","auth","timestamp","v5ident");
+	
+	foreach ($opts as $opt)
+		{
+		${"$opt"}=extr($iframe,'/flashvars.'.$opt.' = [\'"]([^"]+)[\'"]/');
+		}
 	
 	$call	  ="http://cdn.laola1.tv/server/hd_video.php";
 	
