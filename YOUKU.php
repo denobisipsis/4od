@@ -245,9 +245,34 @@ function na($a)
 			
 			$k	=$part->k;
 			
-			if ($k=="-1" or $k=="") {$k=$key2.$key1;}
+			if ($k=="-1" or $k=="") 
+				{
+				// this works?
 				
-			$fileid	=fileid($streamfileids,$seed,$no);
+				$k=$key2.$key1;
+				
+				// for some videos, when K==-1 you should go around through v2
+				
+				$no3=strtoupper($no);
+				
+				if ($knot=="")
+					{
+					$knot=1;
+					$api="http://play.youku.com/play/get.json?vid=$v2&ct=10&ran=6311";
+					$json=json_decode(curl_proxy($api,"","",$headers));
+					$fileid=$json->data->stream[0]->stream_fileid;
+					}
+				
+				if ($no2!="")
+					$fileid=str_replace("E$no2","E$no3",$fileid);
+				
+				$no2=$no3;
+				
+				$ts=intval(($json->data->stream[0]->segs[$part->no]->total_milliseconds_video)/1000);
+				$k=$json->data->stream[0]->segs[$part->no]->key;	
+				}
+				
+			else	$fileid	=fileid($streamfileids,$seed,$no);
 										
 			$ep	=gen_ep($sid."_".$fileid."_".$token);
 									
