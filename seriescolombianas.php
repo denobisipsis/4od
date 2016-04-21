@@ -9,7 +9,7 @@
 How to catch hqq videos
 http://hqq.tv/watch_video.php?v=MDAS77YX4XSU
 http://c8.vkcache.com/sec/ji8eBvEDg4COxQJJNvYXfg/1428224400/hls-vod-s4/flv/api/files/videos/2015/03/20/1426797363a86f2.mp4.m3u8
-Denobis 2015
+Denobis 2016
 */
 function unicode2html($str)
 		{
@@ -61,27 +61,34 @@ function unicode2html($str)
 				
 		return $enc;
 		}
-if (!strpos($link,"embed"))
-{
-$vid  	=explode("v=",$link)[1];
-$embed	=file_get_contents("http://hqq.tv/player/embed_player.php?vid=$vid&autoplay=no");
-}
-else
-{
-$vid=explode("&",explode("vid=",$link)[1])[0];
-$embed  =file_get_contents($link);
-}
+		
+	$embed	="http://hqq.tv/".extrae($contenth,'<iframe src="http://hqq.tv','/','"');
+	
+	$vid=explode("&",explode("vid=",$embed)[1])[0];
+	$embed	=curl_proxy($embed,"",$topenlace,$headers);
+	
+	$ip=urlencode(json_decode(curl_proxy("http://hqq.tv/player/ip.php?type=json","","",$headers))->ip);
+	
 $script	=base64_decode(trim(extract($embed,'<script src="data:text/javascript;charset=utf-8;base64',',','">')));
 $vareval=explode("(",extract($script,'eval(','(',')'))[1];
 $vareval=extract($script,"$vareval=","'","'");
 $form    =unicode2html(extract(base64_decode(implode(array_reverse(str_split($vareval)))),'escape=',"'","'"));
-$at		        =extract($form,'<input name="at"','value="','"');
+$at	        =extract($form,'<input name="at"','value="','"');
 $http_referer	=extract($form,'<input name="http_referer"','value="','"');
-$embedsec1="http://hqq.tv/sec/player/embed_player.php?vid=$vid&at=$at&autoplayed=yes&referer=on&http_referer=";
-$embedsec=explode("document.write(unescape",file_get_contents($embedsec1.urlencode($embedsec1.$http_referer."&pass=")."&pass=","","",$headers));
-// se un-ea el 2º unescape
-$unescape2=extract($embedsec[2],'(','"','"');
-$unescape2=unicode2html(str_replace("%","%u00",$unescape2));
-$link     ="#".extract($unescape2,'var','"#','"');
-echo $link     =unicode2html(un($link));
+$embedsec1="http://hqq.tv/sec/player/embed_player.php?iss=$ip&vid=$vid&at=$at&autoplayed=yes&referer=on&http_referer=";
+$embedsec=array_slice(explode("document.write(unescape",file_get_contents($embedsec1.urlencode($embedsec1.$http_referer."&pass=")."&pass=","","",$headers)),1);
+	
+	$at	=extrae(unicode2html(str_replace("%","%u00",extrae($embedsec[0],'(','"','"'))),'var at','"','"');
+	
+	$vlink	=urlencode(extrae(unicode2html(str_replace("%","%u00",extrae($embedsec[1],'(','"','"'))),'var vid_link','"','"'));
+	$vserver=urlencode(extrae(unicode2html(str_replace("%","%u00",extrae($embedsec[1],'(','"','"'))),'var vid_server ','"','"'));
+	
+	$vid=extrae(unicode2html(str_replace("%","%u00",extrae($embedsec[2],'(','"','"'))),'vid:','"','"');
+	$b=extrae(unicode2html(str_replace("%","%u00",extrae($embedsec[2],'(','"','"'))),'b:','"','"');
+	
+	$md5="http://hqq.tv/player/get_md5.php?server=$vserver&link=$vlink&at=$at&adb=0%2F&b=$b&vid=$vid";
+	
+	$md5=json_decode(curl_proxy($md5,"","",$headers));
+	
+	$m3u8=unicode2html(un($md5->html5_file));
 ?>
